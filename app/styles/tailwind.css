@@ -1,0 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Kreon:wght@300..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap');
+/**
+ * Configure Tailwind v4 in this file using CSS variables and directives:
+ * https://tailwindcss.com/blog/tailwindcss-v4-alpha#css-first-configuration 
+ */
+
+@import 'tailwindcss';
+
+@theme {
+  --font-family-kreon: 'Kreon', serif;
+  --font-family-lora: 'Lora', serif;
+  --color-rusticBrown: #672f0d;
+  --color-oatBrown: #ba9f81;
+  --color-brown: #5c3c17;
+}
