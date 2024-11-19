@@ -3,6 +3,7 @@ import {Await, useLoaderData, Link} from '@remix-run/react';
 import {Suspense} from 'react';
 import {Image, Money} from '@shopify/hydrogen';
 import IconsWithText from '~/components/IconsWithText';
+import AddToWishlist from '~/components/AddToWishlist';
 
 /**
  * @type {MetaFunction}
@@ -64,9 +65,9 @@ export default function Homepage() {
   /** @type {LoaderReturnData} */
   const data = useLoaderData();
   return (
-    <div className="home">
-      <IconsWithText />
+    <div className="home max-w-[1280px] font-kreon text-textBrown">
       <FeaturedCollection collection={data.featuredCollection} />
+      <IconsWithText />
       <RecommendedProducts products={data.recommendedProducts} />
     </div>
   );
@@ -81,17 +82,23 @@ function FeaturedCollection({collection}) {
   if (!collection) return null;
   const image = collection?.image;
   return (
-    <Link
-      className="featured-collection"
-      to={`/collections/${collection.handle}`}
-    >
+    <div className="flex flex-col md:flex-row py-10 ">
+      <div className="flex flex-col  justify-center ">
+        <h1>{collection.title}</h1>
+        <p>{collection.description}</p>
+        <Link
+          className="featured-collection "
+          to={`/collections/${collection.handle}`}
+        >
+          <button>Voir la collection</button>
+        </Link>
+      </div>
       {image && (
-        <div className="featured-collection-image">
-          <Image data={image} sizes="100vw" />
+        <div className="featured-collection-image ">
+          <Image data={image} />
         </div>
       )}
-      <h1>{collection.title}</h1>
-    </Link>
+    </div>
   );
 }
 
@@ -102,7 +109,7 @@ function FeaturedCollection({collection}) {
  */
 function RecommendedProducts({products}) {
   return (
-    <div className="recommended-products">
+    <div className="recommended-products py-10">
       <h2>Recommended Products</h2>
       <Suspense fallback={<div>Loading...</div>}>
         <Await resolve={products}>
@@ -121,6 +128,7 @@ function RecommendedProducts({products}) {
                         sizes="(min-width: 45em) 20vw, 50vw"
                       />
                       <h4>{product.title}</h4>
+                      <AddToWishlist productId={product.id} />
                       <small>
                         <Money data={product.priceRange.minVariantPrice} />
                       </small>
@@ -140,6 +148,7 @@ const FEATURED_COLLECTION_QUERY = `#graphql
   fragment FeaturedCollection on Collection {
     id
     title
+    description
     image {
       id
       url
@@ -182,7 +191,7 @@ const RECOMMENDED_PRODUCTS_QUERY = `#graphql
   }
   query RecommendedProducts ($country: CountryCode, $language: LanguageCode)
     @inContext(country: $country, language: $language) {
-    products(first: 4, sortKey: UPDATED_AT, reverse: true) {
+    products(first: 3, sortKey: UPDATED_AT, reverse: false) {
       nodes {
         ...RecommendedProduct
       }

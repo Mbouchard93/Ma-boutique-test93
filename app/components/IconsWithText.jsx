@@ -5,7 +5,7 @@ import iconeToaster from '../assets/icone-03.png';
 import IconWithText from './IconWithText';
 export default function IconsWithText() {
   return (
-    <div className="flex flex-col items-center md:flex-row justify-around p-5 ">
+    <div className="flex flex-col items-center md:flex-row justify-between py-10 ">
       <IconWithText
         text="L'authenticité du son rétro, où chaque station raconte une histoire."
         src={iconeRadio}

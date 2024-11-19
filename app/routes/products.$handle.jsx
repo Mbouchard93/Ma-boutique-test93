@@ -10,6 +10,8 @@ import {getVariantUrl} from '~/lib/variants';
 import {ProductPrice} from '~/components/ProductPrice';
 import {ProductImage} from '~/components/ProductImage';
 import {ProductForm} from '~/components/ProductForm';
+import Rating from '~/components/Rating';
+import AddToWishlist from '~/components/AddToWishlist';
 
 /**
  * @type {MetaFunction<typeof loader>}
@@ -136,12 +138,13 @@ export default function Product() {
   );
 
   const {title, descriptionHtml} = product;
-
+  console.log(product.id);
   return (
     <div className="product">
       <ProductImage image={selectedVariant?.image} />
       <div className="product-main">
         <h1>{title}</h1>
+        <AddToWishlist productId={product.id} />
         <ProductPrice
           price={selectedVariant?.price}
           compareAtPrice={selectedVariant?.compareAtPrice}
@@ -193,6 +196,7 @@ export default function Product() {
           ],
         }}
       />
+      <Rating />
     </div>
   );
 }

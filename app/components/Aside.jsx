@@ -39,11 +39,11 @@ export function Aside({children, heading, type}) {
   return (
     <div
       aria-modal
-      className={`overlay ${expanded ? 'expanded' : ''}`}
+      className={`overlay ${expanded ? 'expanded' : ''} `}
       role="dialog"
     >
       <button className="close-outside" onClick={close} />
-      <aside>
+      <aside className="bg-red-500 text-white">
         <header>
           <h3>{heading}</h3>
           <button className="close reset" onClick={close}>

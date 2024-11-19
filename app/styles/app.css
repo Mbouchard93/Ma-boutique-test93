@@ -19,7 +19,6 @@ img {
 * --------------------------------------------------
 */
 aside {
-  background: var(--color-light);
   box-shadow: 0 0 50px rgba(0, 0, 0, 0.3);
   height: 100vh;
   max-width: var(--aside-width);
@@ -342,6 +341,7 @@ button.reset:hover:not(:has(> *)) {
 
 .featured-collection-image {
   aspect-ratio: 1 / 1;
+  max-width: 550px;
   @media (min-width: 45em) {
     aspect-ratio: 16 / 9;
   }
@@ -355,10 +355,10 @@ button.reset:hover:not(:has(> *)) {
 
 .recommended-products-grid {
   display: grid;
-  grid-gap: 1.5rem;
-  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 4rem;
+  grid-template-columns: repeat(1, 1fr);
   @media (min-width: 45em) {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 

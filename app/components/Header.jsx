@@ -5,6 +5,7 @@ import {useAside} from '~/components/Aside';
 import {BsCart3} from 'react-icons/bs';
 import {IoSearchOutline} from 'react-icons/io5';
 import {FaRegUser} from 'react-icons/fa6';
+import {RiHeartAdd2Line} from 'react-icons/ri';
 
 /**
  * @param {HeaderProps}
@@ -103,6 +104,9 @@ function HeaderCtas({isLoggedIn, cart}) {
       </NavLink>
       <SearchToggle />
       <CartToggle cart={cart} />
+      <NavLink to="/wishlist">
+        <RiHeartAdd2Line />
+      </NavLink>
     </nav>
   );
 }
