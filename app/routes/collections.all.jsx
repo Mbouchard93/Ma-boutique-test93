@@ -4,6 +4,8 @@ import {getPaginationVariables, Image, Money} from '@shopify/hydrogen';
 import {useVariantUrl} from '~/lib/variants';
 import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
 import AddToWishlist from '~/components/AddToWishlist';
+import {CONTENUE_QUERRY} from '~/graphql/customer-account/dynamicContents';
+import Contenue from '~/components/Contenue';
 
 /**
  * @type {MetaFunction<typeof loader>}
@@ -36,13 +38,14 @@ async function loadCriticalData({context, request}) {
     pageBy: 8,
   });
 
-  const [{products}] = await Promise.all([
+  const [{products}, {metaobjects}] = await Promise.all([
     storefront.query(CATALOG_QUERY, {
       variables: {...paginationVariables},
     }),
     // Add other queries here, so that they are loaded in parallel
+    storefront.query(CONTENUE_QUERRY),
   ]);
-  return {products};
+  return {products, dynamicContents: metaobjects?.nodes ?? []};
 }
 
 /**
@@ -57,11 +60,14 @@ function loadDeferredData({context}) {
 
 export default function Collection() {
   /** @type {LoaderReturnData} */
-  const {products} = useLoaderData();
+  const {products, dynamicContents} = useLoaderData();
 
   return (
-    <div className="collection">
-      <h1>Products</h1>
+    <div className="collection py-10">
+      <Contenue contents={dynamicContents} />
+      <h1 className="py-10 text-textBrown font-kreon uppercase">
+        Tous nos articles
+      </h1>
       <PaginatedResourceSection
         connection={products}
         resourcesClassName="products-grid"
@@ -87,6 +93,7 @@ export default function Collection() {
 function ProductItem({product, loading}) {
   const variant = product.variants.nodes[0];
   const variantUrl = useVariantUrl(product.handle, variant.selectedOptions);
+
   return (
     <Link
       className="product-item"
@@ -103,11 +110,11 @@ function ProductItem({product, loading}) {
           sizes="(min-width: 45em) 400px, 100vw"
         />
       )}
-      <h4>{product.title}</h4>
-      <AddToWishlist productId={product.id} />
-      <small>
-        <Money data={product.priceRange.minVariantPrice} />
-      </small>
+      <div className="flex justify-between">
+        <h4>{product.title}</h4>
+        <AddToWishlist productId={product.id} />
+      </div>
+      <Money data={product.priceRange.minVariantPrice} />
     </Link>
   );
 }

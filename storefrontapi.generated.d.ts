@@ -361,6 +361,16 @@ export type RecommendedProductFragment = Pick<
   StorefrontAPI.Product,
   'id' | 'title' | 'handle'
 > & {
+  variants: {
+    nodes: Array<
+      Pick<StorefrontAPI.ProductVariant, 'id'> & {
+        selectedOptions: Array<
+          Pick<StorefrontAPI.SelectedOption, 'name' | 'value'>
+        >;
+        product: Pick<StorefrontAPI.Product, 'handle'>;
+      }
+    >;
+  };
   priceRange: {
     minVariantPrice: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
   };
@@ -380,6 +390,16 @@ export type RecommendedProductsQuery = {
   products: {
     nodes: Array<
       Pick<StorefrontAPI.Product, 'id' | 'title' | 'handle'> & {
+        variants: {
+          nodes: Array<
+            Pick<StorefrontAPI.ProductVariant, 'id'> & {
+              selectedOptions: Array<
+                Pick<StorefrontAPI.SelectedOption, 'name' | 'value'>
+              >;
+              product: Pick<StorefrontAPI.Product, 'handle'>;
+            }
+          >;
+        };
         priceRange: {
           minVariantPrice: Pick<
             StorefrontAPI.MoneyV2,
@@ -679,6 +699,48 @@ export type CatalogQuery = {
     pageInfo: Pick<
       StorefrontAPI.PageInfo,
       'hasPreviousPage' | 'hasNextPage' | 'startCursor' | 'endCursor'
+    >;
+  };
+};
+
+export type ContenueQueryVariables = StorefrontAPI.Exact<{
+  [key: string]: never;
+}>;
+
+export type ContenueQuery = {
+  metaobjects: {
+    nodes: Array<
+      Pick<StorefrontAPI.Metaobject, 'id'> & {
+        titre?: StorefrontAPI.Maybe<
+          Pick<StorefrontAPI.MetaobjectField, 'value'>
+        >;
+        description?: StorefrontAPI.Maybe<
+          Pick<StorefrontAPI.MetaobjectField, 'value'>
+        >;
+        label?: StorefrontAPI.Maybe<
+          Pick<StorefrontAPI.MetaobjectField, 'value'>
+        >;
+      }
+    >;
+  };
+};
+
+export type FaqsQueryVariables = StorefrontAPI.Exact<{[key: string]: never}>;
+
+export type FaqsQuery = {
+  metaobjects: {
+    nodes: Array<
+      Pick<StorefrontAPI.Metaobject, 'id'> & {
+        question?: StorefrontAPI.Maybe<
+          Pick<StorefrontAPI.MetaobjectField, 'value'>
+        >;
+        reponse?: StorefrontAPI.Maybe<
+          Pick<StorefrontAPI.MetaobjectField, 'value'>
+        >;
+        categorie?: StorefrontAPI.Maybe<
+          Pick<StorefrontAPI.MetaobjectField, 'value'>
+        >;
+      }
     >;
   };
 };
@@ -1281,7 +1343,7 @@ interface GeneratedQueryTypes {
     return: FeaturedCollectionQuery;
     variables: FeaturedCollectionQueryVariables;
   };
-  '#graphql\n  fragment RecommendedProduct on Product {\n    id\n    title\n    handle\n    priceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    images(first: 1) {\n      nodes {\n        id\n        url\n        altText\n        width\n        height\n      }\n    }\n  }\n  query RecommendedProducts ($country: CountryCode, $language: LanguageCode)\n    @inContext(country: $country, language: $language) {\n    products(first: 3, sortKey: UPDATED_AT, reverse: false) {\n      nodes {\n        ...RecommendedProduct\n      }\n    }\n  }\n': {
+  '#graphql\n  fragment RecommendedProduct on Product {\n    id\n    title\n    handle\n    variants(first : 1){\n      nodes{\n        id\n        selectedOptions{\n        name\n        value\n        }\n        product {\n        handle\n        }\n      }\n    }\n    priceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    images(first: 1) {\n      nodes {\n        id\n        url\n        altText\n        width\n        height\n      }\n    }\n  }\n  query RecommendedProducts ($country: CountryCode, $language: LanguageCode)\n    @inContext(country: $country, language: $language) {\n    products(first: 3, sortKey: UPDATED_AT, reverse: false) {\n      nodes {\n        ...RecommendedProduct\n      }\n    }\n  }\n': {
     return: RecommendedProductsQuery;
     variables: RecommendedProductsQueryVariables;
   };
@@ -1308,6 +1370,14 @@ interface GeneratedQueryTypes {
   '#graphql\n  query Catalog(\n    $country: CountryCode\n    $language: LanguageCode\n    $first: Int\n    $last: Int\n    $startCursor: String\n    $endCursor: String\n  ) @inContext(country: $country, language: $language) {\n    products(first: $first, last: $last, before: $startCursor, after: $endCursor) {\n      nodes {\n        ...ProductItem\n      }\n      pageInfo {\n        hasPreviousPage\n        hasNextPage\n        startCursor\n        endCursor\n      }\n    }\n  }\n  #graphql\n  fragment MoneyProductItem on MoneyV2 {\n    amount\n    currencyCode\n  }\n  fragment ProductItem on Product {\n    id\n    handle\n    title\n    featuredImage {\n      id\n      altText\n      url\n      width\n      height\n    }\n    priceRange {\n      minVariantPrice {\n        ...MoneyProductItem\n      }\n      maxVariantPrice {\n        ...MoneyProductItem\n      }\n    }\n    variants(first: 1) {\n      nodes {\n        selectedOptions {\n          name\n          value\n        }\n      }\n    }\n  }\n\n': {
     return: CatalogQuery;
     variables: CatalogQueryVariables;
+  };
+  ' #graphql\n    query contenue {\n      metaobjects(first:100, type: "contenue"){\n        nodes{\n          id\n          titre : field(key:"titre"){\n            value\n          }\n          description : field(key: "description"){\n            value\n          }\n          label: field(key: "bouton"){\n            value\n          }\n        }\n      }\n    }\n    ': {
+    return: ContenueQuery;
+    variables: ContenueQueryVariables;
+  };
+  ' #graphql\nquery faqs {\n  metaobjects(first:100, type: "faq"){\n    nodes{\n      id\n      question : field(key:"question"){\n        value\n      }\n      reponse : field(key: "reponse"){\n        value\n      }\n      categorie: field(key: "categorie"){\n        value\n      }\n    }\n  }\n}\n': {
+    return: FaqsQuery;
+    variables: FaqsQueryVariables;
   };
   ' #graphql\n    query employees {\n        metaobjects(first: 250, type: "employe") {\n            nodes {\n                id\n                firstname :field(key: "first_name"){\n                    value\n                }\n                lastname : field(key : "last_name" ){\n                    value\n                }\n                profilePicture :field(key : "profile_picture"){\n                    value\n                }\n                age :field(key: "age"){\n                    value\n                }\n                position :field(key : "position"){\n                    value\n                }\n                salary :field(key : "salary"){\n                value\n                }\n                email :field(key : "email"){\n                    value\n                }\n            }\n        }\n    }\n': {
     return: EmployeesQuery;
@@ -1341,7 +1411,7 @@ interface GeneratedQueryTypes {
     return: PredictiveSearchQuery;
     variables: PredictiveSearchQueryVariables;
   };
-  '#graphql\n  fragment MoneyProductItem on MoneyV2 {\n    amount\n    currencyCode\n  }\n \n  query Products($ids: [ID!]!) {\n    nodes(ids: $ids) {\n      ... on Product {\n        id\n        title\n        handle\n        featuredImage{\n          url(transform: {maxHeight: 200, maxWidth: 200})\n        }\n        priceRange {\n          minVariantPrice {\n            ...MoneyProductItem\n          }\n          maxVariantPrice {\n            ...MoneyProductItem\n          }\n        }\n      }\n    }\n  }\n': {
+  '#graphql\n  fragment MoneyProductItem on MoneyV2 {\n    amount\n    currencyCode\n  }\n \n  query Products($ids: [ID!]!) {\n    nodes(ids: $ids) {\n      ... on Product {\n        id\n        title\n        handle\n        featuredImage {\n          url(transform: {maxHeight: 200, maxWidth: 200})\n        }\n        priceRange {\n          minVariantPrice {\n            ...MoneyProductItem\n          }\n          maxVariantPrice {\n            ...MoneyProductItem\n          }\n        }\n      }\n    }\n  }\n': {
     return: ProductsQuery;
     variables: ProductsQueryVariables;
   };

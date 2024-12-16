@@ -1,5 +1,8 @@
 import {Suspense} from 'react';
 import {Await, NavLink} from '@remix-run/react';
+import Facebook from '../assets/facebook.svg';
+import Instagram from '../assets/instagram.svg';
+import Twiter from '../assets/twiter.svg';
 
 /**
  * @param {FooterProps}
@@ -32,34 +35,87 @@ export function Footer({footer: footerPromise, header, publicStoreDomain}) {
  * }}
  */
 function FooterMenu({menu, primaryDomainUrl, publicStoreDomain}) {
+  const currentYear = new Date().getFullYear();
+
   return (
-    <nav className="footer-menu" role="navigation">
-      {(menu || FALLBACK_FOOTER_MENU).items.map((item) => {
-        if (!item.url) return null;
-        // if the url is internal, we strip the domain
-        const url =
-          item.url.includes('myshopify.com') ||
-          item.url.includes(publicStoreDomain) ||
-          item.url.includes(primaryDomainUrl)
-            ? new URL(item.url).pathname
-            : item.url;
-        const isExternal = !url.startsWith('/');
-        return isExternal ? (
-          <a href={url} key={item.id} rel="noopener noreferrer" target="_blank">
-            {item.title}
-          </a>
-        ) : (
-          <NavLink
-            end
-            key={item.id}
-            prefetch="intent"
-            style={activeLinkStyle}
-            to={url}
-          >
-            {item.title}
-          </NavLink>
-        );
-      })}
+    <nav
+      className=" p-8 lg:px-0 py-8 max-w-[1280px] lg:m-auto grid lg:gap-4"
+      role="navigation"
+    >
+      <div className="lg:grid lg:grid-cols-2 ">
+        <div className="lg:order-2 lg:max-w-[325px] lg:place-self-end">
+          <h3 className="text-white font-lora text-[1.3rem] my-[0.5rem]  ">
+            Restez à lafut,
+            <span className="text-yellow "> abonnez-vous</span> pour obtenir des
+            <span className="text-yellow"> offre exclusive</span>
+          </h3>
+          <form className="flex flex-col">
+            <input
+              className="bg-[#FCF5ED]"
+              type="text"
+              placeholder="Adresse-email"
+            />
+            <button className="uppercase bg-orange cursor-pointer py-2 rounded-[4px] text-light font-medium">
+              Soumettre
+            </button>
+          </form>
+        </div>
+        <div className="py-5 lg:py-0">
+          <h4 className="text-[#FCF5ED] text-[1.4rem] font-lora underline ">
+            Menu
+          </h4>
+          <ul className="grid grid-cols-2 font-lora ">
+            {(menu || FALLBACK_FOOTER_MENU).items.map((item) => {
+              if (!item.url) return null;
+              // if the url is internal, we strip the domain
+              const url =
+                item.url.includes('myshopify.com') ||
+                item.url.includes(publicStoreDomain) ||
+                item.url.includes(primaryDomainUrl)
+                  ? new URL(item.url).pathname
+                  : item.url;
+              const isExternal = !url.startsWith('/');
+              return isExternal ? (
+                <li>
+                  <a
+                    href={url}
+                    key={item.id}
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    {item.title}
+                  </a>
+                </li>
+              ) : (
+                <NavLink
+                  end
+                  key={item.id}
+                  prefetch="intent"
+                  style={activeLinkStyle}
+                  to={url}
+                >
+                  {item.title}
+                </NavLink>
+              );
+            })}
+          </ul>
+        </div>
+      </div>
+      <div className="bg-[#FCF5ED] shadow-footer flex justify-between py-1 px-4 my-4">
+        <NavLink prefetch="intent" to="/" style={activeLinkStyle} end>
+          <strong className="font-kreon text-[30px] text-rusticBrown uppercase">
+            vintage
+          </strong>
+        </NavLink>
+        <div className="flex items-center gap-4">
+          <img src={Facebook} aria-label="Lien vers facebook" />
+          <img src={Instagram} aria-label="Lien vers instagram" />
+          <img src={Twiter} aria-label="Lien vers twiter" />
+        </div>
+      </div>
+      <p className="text-center text-[#FCF5ED]">
+        © Mariane {currentYear} Tous droits réservés.
+      </p>
     </nav>
   );
 }
@@ -115,7 +171,7 @@ const FALLBACK_FOOTER_MENU = {
 function activeLinkStyle({isActive, isPending}) {
   return {
     fontWeight: isActive ? 'bold' : undefined,
-    color: isPending ? 'grey' : 'white',
+    color: isPending ? 'grey' : '#B39E82',
   };
 }
 

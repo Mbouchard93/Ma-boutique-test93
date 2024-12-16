@@ -4,6 +4,8 @@ import {Suspense} from 'react';
 import {Image, Money} from '@shopify/hydrogen';
 import IconsWithText from '~/components/IconsWithText';
 import AddToWishlist from '~/components/AddToWishlist';
+import {AddToCartButton} from '~/components/AddToCartButton';
+import {useAside} from '~/components/Aside';
 
 /**
  * @type {MetaFunction}
@@ -65,8 +67,9 @@ export default function Homepage() {
   /** @type {LoaderReturnData} */
   const data = useLoaderData();
   return (
-    <div className="home max-w-[1280px] font-kreon text-textBrown">
+    <div className="home max-w-[1280px] font-lora text-textBrown">
       <FeaturedCollection collection={data.featuredCollection} />
+      <CarbonEmprunt />
       <IconsWithText />
       <RecommendedProducts products={data.recommendedProducts} />
     </div>
@@ -82,22 +85,24 @@ function FeaturedCollection({collection}) {
   if (!collection) return null;
   const image = collection?.image;
   return (
-    <div className="flex flex-col md:flex-row py-10 ">
-      <div className="flex flex-col  justify-center ">
+    <div className="flex flex-col md:flex-row py-10 justify-between ">
+      {image && (
+        <div className="featured-collection-image md:order-2  ">
+          <Image data={image} sizes="(max-width: 800px) 100vw, 800px" />
+        </div>
+      )}
+      <div className="flex flex-col gap-10 max-w-[450px]">
         <h1>{collection.title}</h1>
         <p>{collection.description}</p>
         <Link
           className="featured-collection "
           to={`/collections/${collection.handle}`}
         >
-          <button>Voir la collection</button>
+          <button className="bg-orange text-light px-4 py-2 rounded-sm shadow-btnBrown hover:shadow-btnBrownHover cursor-pointer ">
+            Voir la collection
+          </button>
         </Link>
       </div>
-      {image && (
-        <div className="featured-collection-image ">
-          <Image data={image} />
-        </div>
-      )}
     </div>
   );
 }
@@ -108,6 +113,7 @@ function FeaturedCollection({collection}) {
  * }}
  */
 function RecommendedProducts({products}) {
+  const {open} = useAside();
   return (
     <div className="recommended-products py-10">
       <h2>Recommended Products</h2>
@@ -117,22 +123,39 @@ function RecommendedProducts({products}) {
             <div className="recommended-products-grid">
               {response
                 ? response.products.nodes.map((product) => (
-                    <Link
-                      key={product.id}
-                      className="recommended-product"
-                      to={`/products/${product.handle}`}
-                    >
-                      <Image
-                        data={product.images.nodes[0]}
-                        aspectRatio="1/1"
-                        sizes="(min-width: 45em) 20vw, 50vw"
-                      />
-                      <h4>{product.title}</h4>
-                      <AddToWishlist productId={product.id} />
-                      <small>
+                    <div key={product.id} className="flex flex-col gap-2">
+                      <Link
+                        key={product.id}
+                        className="recommended-product"
+                        to={`/products/${product.handle}`}
+                      >
+                        <Image
+                          data={product.images.nodes[0]}
+                          aspectRatio="1/1"
+                          sizes="(min-width: 45em) 20vw, 50vw"
+                        />
+                        <div className="flex justify-between">
+                          <h4>{product.title}</h4>
+                          <AddToWishlist productId={product.id} />
+                        </div>
+
                         <Money data={product.priceRange.minVariantPrice} />
-                      </small>
-                    </Link>
+                      </Link>
+                      <AddToCartButton
+                        onClick={() => {
+                          open('cart');
+                        }}
+                        lines={[
+                          {
+                            merchandiseId: product.variants.nodes[0].id,
+                            quantity: 1,
+                            selectedVariant: product.variants.nodes[0],
+                          },
+                        ]}
+                      >
+                        Ajouter
+                      </AddToCartButton>
+                    </div>
                   ))
                 : null}
             </div>
@@ -140,6 +163,30 @@ function RecommendedProducts({products}) {
         </Await>
       </Suspense>
       <br />
+    </div>
+  );
+}
+
+function CarbonEmprunt() {
+  return (
+    <div className="text-textBrown flex flex-col font-lora gap-4 py-8">
+      <h3 className="text-[1.6rem] font-kreon">
+        Saviez-vous qu&apos;acheter des articles usagés réduit considérablement
+        votre empreinte carbone ?
+      </h3>
+      <p>
+        En choisissant des produits de seconde main, vous contribuez à préserver
+        les ressources naturelles et à diminuer les émissions de CO2.Nos
+        produits sont soigneusement sélectionnés et restaurés pour vous offrir
+        la beauté intemporelle du vintage, tout en garantissant une
+        fonctionnalité moderne.
+      </p>
+      <Link
+        className="bg-textBrown text-light px-4 py-2 w-fit  shadow-btnBrown hover:shadow-btnBrownHover cursor-pointer  rounded-sm"
+        to={'/calculatorCarbon'}
+      >
+        Calculter votre emprunt carbonne
+      </Link>
     </div>
   );
 }
@@ -173,6 +220,18 @@ const RECOMMENDED_PRODUCTS_QUERY = `#graphql
     id
     title
     handle
+    variants(first : 1){
+      nodes{
+        id
+        selectedOptions{
+        name
+        value
+        }
+        product {
+        handle
+        }
+      }
+    }
     priceRange {
       minVariantPrice {
         amount

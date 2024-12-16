@@ -70,10 +70,13 @@ export default function Blog() {
   const {articles} = blog;
 
   return (
-    <div className="blog">
-      <h1>{blog.title}</h1>
+    <div className="blog text-textBrown py-10 font-lora max-w-[1280px] flex flex-col gap-4">
+      <h1 className="font-kreon">{blog.title}</h1>
       <div className="blog-grid">
-        <PaginatedResourceSection connection={articles}>
+        <PaginatedResourceSection
+          connection={articles}
+          resourcesClassName={'grid gap-8 md:grid-cols-2'}
+        >
           {({node: article, index}) => (
             <ArticleItem
               article={article}

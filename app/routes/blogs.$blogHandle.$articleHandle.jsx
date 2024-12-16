@@ -72,15 +72,17 @@ export default function Article() {
   }).format(new Date(article.publishedAt));
 
   return (
-    <div className="article">
-      <h1>
+    <div className="article max-w-[880px] py-10 text-textBrown flex flex-col gap-6">
+      <h1 className="font-kreon">
         {title}
         <div>
           {publishedDate} &middot; {author?.name}
         </div>
       </h1>
 
-      {image && <Image data={image} sizes="90vw" loading="eager" />}
+      {image && (
+        <Image data={image} className="max-h-[450px] w-auto" loading="eager" />
+      )}
       <div
         dangerouslySetInnerHTML={{__html: contentHtml}}
         className="article"

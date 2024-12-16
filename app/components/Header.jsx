@@ -6,6 +6,7 @@ import {BsCart3} from 'react-icons/bs';
 import {IoSearchOutline} from 'react-icons/io5';
 import {FaRegUser} from 'react-icons/fa6';
 import {RiHeartAdd2Line} from 'react-icons/ri';
+import Scrolling from './Scrolling';
 
 /**
  * @param {HeaderProps}
@@ -13,20 +14,23 @@ import {RiHeartAdd2Line} from 'react-icons/ri';
 export function Header({header, isLoggedIn, cart, publicStoreDomain}) {
   const {menu} = header;
   return (
-    <header className="header border-b-oatBrown border-b">
-      <NavLink prefetch="intent" to="/" style={activeLinkStyle} end>
-        <strong className="font-kreon text-[30px] text-rusticBrown uppercase">
-          vintage
-        </strong>
-      </NavLink>
-      <HeaderMenu
-        menu={menu}
-        viewport="desktop"
-        primaryDomainUrl={header.shop.primaryDomain.url}
-        publicStoreDomain={publicStoreDomain}
-      />
-      <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />
-    </header>
+    <>
+      <Scrolling />
+      <header className="header border-b-oatBrown border-b">
+        <NavLink prefetch="intent" to="/" style={activeLinkStyle} end>
+          <strong className="font-kreon text-[30px] text-rusticBrown uppercase">
+            vintage
+          </strong>
+        </NavLink>
+        <HeaderMenu
+          menu={menu}
+          viewport="desktop"
+          primaryDomainUrl={header.shop.primaryDomain.url}
+          publicStoreDomain={publicStoreDomain}
+        />
+        <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />
+      </header>
+    </>
   );
 }
 
@@ -70,18 +74,42 @@ export function HeaderMenu({
           item.url.includes(primaryDomainUrl)
             ? new URL(item.url).pathname
             : item.url;
+
         return (
-          <NavLink
-            className="header-menu-item "
-            end
-            key={item.id}
-            onClick={close}
-            prefetch="intent"
-            style={activeLinkStyle}
-            to={url}
-          >
-            {item.title}
-          </NavLink>
+          <div key={item.id} className="relative group">
+            <NavLink
+              className="header-menu-item"
+              end
+              onClick={close}
+              prefetch="intent"
+              style={activeLinkStyle}
+              to={url}
+            >
+              {item.title}
+            </NavLink>
+            <div className="absolute top-[100%] left-0 flex-col hidden group-hover:flex">
+              {item.items.map((subitems) => {
+                const subItemUrl =
+                  subitems.url.includes('myshopify.com') ||
+                  subitems.url.includes(publicStoreDomain) ||
+                  subitems.url.includes(primaryDomainUrl)
+                    ? new URL(subitems.url).pathname
+                    : subitems.url;
+                return (
+                  <NavLink
+                    key={subitems.id}
+                    className="px-4 py-2 block bg-[#FCF5ED] shadow-sm rounded-b-md"
+                    onClick={close}
+                    prefetch="intent"
+                    style={activeLinkStyle}
+                    to={subItemUrl}
+                  >
+                    {subitems.title}
+                  </NavLink>
+                );
+              })}
+            </div>
+          </div>
         );
       })}
     </nav>
@@ -115,7 +143,7 @@ function HeaderMenuMobileToggle() {
   const {open} = useAside();
   return (
     <button
-      className="header-menu-mobile-toggle reset"
+      className="header-menu-mobile-toggle reset cursor-pointer text-brown "
       onClick={() => open('mobile')}
     >
       <h3>☰</h3>
@@ -126,7 +154,10 @@ function HeaderMenuMobileToggle() {
 function SearchToggle() {
   const {open} = useAside();
   return (
-    <button className="reset text-brown" onClick={() => open('search')}>
+    <button
+      className="reset text-brown cursor-pointer"
+      onClick={() => open('search')}
+    >
       <IoSearchOutline />
     </button>
   );

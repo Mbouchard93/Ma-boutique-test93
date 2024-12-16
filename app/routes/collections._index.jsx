@@ -51,8 +51,8 @@ export default function Collections() {
   const {collections} = useLoaderData();
 
   return (
-    <div className="collections">
-      <h1>Collections</h1>
+    <div className="collections py-10 flex flex-col gap-5">
+      <h1 className="font-kreon text-textBrown">Nos Collections</h1>
       <PaginatedResourceSection
         connection={collections}
         resourcesClassName="collections-grid"
@@ -87,11 +87,15 @@ function CollectionItem({collection, index}) {
         <Image
           alt={collection.image.altText || collection.title}
           aspectRatio="1/1"
+          sizes="320px"
           data={collection.image}
           loading={index < 3 ? 'eager' : undefined}
         />
       )}
-      <h5>{collection.title}</h5>
+      <h5 className="font-kreon text-[1.2rem] text-textBrown">
+        {collection.title}
+      </h5>
+      <p className="font-lora text-textBrown">{collection.description}</p>
     </Link>
   );
 }
@@ -101,6 +105,7 @@ const COLLECTIONS_QUERY = `#graphql
     id
     title
     handle
+    description
     image {
       id
       url

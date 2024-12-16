@@ -78,12 +78,12 @@ export default function Collection() {
   const {collection} = useLoaderData();
 
   return (
-    <div className="collection">
-      <h1>{collection.title}</h1>
-      <p className="collection-description">{collection.description}</p>
+    <div className="collection py-10 text-textBrown">
+      <h1 className="font-kreon ">{collection.title}</h1>
+      <p className="collection-description ">{collection.description}</p>
       <PaginatedResourceSection
         connection={collection.products}
-        resourcesClassName="products-grid"
+        resourcesClassName="grid grid-cols-2 gap-[10rem] max-w-[850px]"
       >
         {({node: product, index}) => (
           <ProductItem
@@ -93,6 +93,7 @@ export default function Collection() {
           />
         )}
       </PaginatedResourceSection>
+
       <Analytics.CollectionView
         data={{
           collection: {
@@ -130,10 +131,8 @@ function ProductItem({product, loading}) {
           sizes="(min-width: 45em) 400px, 100vw"
         />
       )}
-      <h4>{product.title}</h4>
-      <small>
-        <Money data={product.priceRange.minVariantPrice} />
-      </small>
+      <h4 className="font-semibold">{product.title}</h4>
+      <Money data={product.priceRange.minVariantPrice} />
     </Link>
   );
 }

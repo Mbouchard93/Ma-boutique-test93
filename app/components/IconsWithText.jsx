@@ -1,25 +1,29 @@
 import iconeRadio from '../assets/icone-01.png';
 import iconeKodak from '../assets/icone-02.png';
 import iconeToaster from '../assets/icone-03.png';
-
 import IconWithText from './IconWithText';
+
+/**
+ *
+ * @returns {JSX.Element}
+ */
 export default function IconsWithText() {
   return (
-    <div className="flex flex-col items-center md:flex-row justify-between py-10 ">
+    <div className="flex flex-col items-center md:flex-row justify-between py-16 ">
       <IconWithText
-        text="L'authenticité du son rétro, où chaque station raconte une histoire."
+        text="Découvrez notre sélection de produits vintage qui capturent le charme d'antan et ajoutent une touche authentique."
         src={iconeRadio}
-        alt="image radio"
+        alt="un vieux radio"
       />
       <IconWithText
-        text="Capturer l'instant avec le charme du vintage, chaque cliché une œuvre"
+        text="Nos livraisons sont soigneusement emballées pour garantir que chaque trésor arrive intact, prêt à être découvert."
         src={iconeKodak}
-        alt="image d'appareil photo"
+        alt="Un sac de transport"
       />
       <IconWithText
-        text="Le charme d'antan, pour un petit-déjeuner savoureux et vintage."
+        text="La qualité intemporelle de nos produits vintage vous garantit des pièces qui résistent au temps et conservent leur éclat."
         src={iconeToaster}
-        alt="image de grille pain"
+        alt="Une montre"
       />
     </div>
   );

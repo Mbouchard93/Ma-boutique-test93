@@ -3,6 +3,7 @@ import {useVariantUrl} from '~/lib/variants';
 import {Link} from '@remix-run/react';
 import {ProductPrice} from './ProductPrice';
 import {useAside} from './Aside';
+import {TbCircleMinus, TbCirclePlus} from 'react-icons/tb';
 
 /**
  * A single line item in the cart. It displays the product image, title, price.
@@ -19,7 +20,7 @@ export function CartLineItem({layout, line}) {
   const {close} = useAside();
 
   return (
-    <li key={id} className="cart-line">
+    <li key={id} className="cart-line text-textBrown">
       {image && (
         <Image
           alt={title}
@@ -31,7 +32,7 @@ export function CartLineItem({layout, line}) {
         />
       )}
 
-      <div>
+      <div className="flex flex-col justify-between">
         <Link
           prefetch="intent"
           to={lineItemUrl}
@@ -46,15 +47,7 @@ export function CartLineItem({layout, line}) {
           </p>
         </Link>
         <ProductPrice price={line?.cost?.totalAmount} />
-        <ul>
-          {selectedOptions.map((option) => (
-            <li key={option.name}>
-              <small>
-                {option.name}: {option.value}
-              </small>
-            </li>
-          ))}
-        </ul>
+
         <CartLineQuantity line={line} />
       </div>
     </li>
@@ -75,29 +68,37 @@ function CartLineQuantity({line}) {
 
   return (
     <div className="cart-line-quantity">
-      <small>Quantity: {quantity} &nbsp;&nbsp;</small>
-      <CartLineUpdateButton lines={[{id: lineId, quantity: prevQuantity}]}>
-        <button
-          aria-label="Decrease quantity"
-          disabled={quantity <= 1 || !!isOptimistic}
-          name="decrease-quantity"
-          value={prevQuantity}
-        >
-          <span>&#8722; </span>
-        </button>
-      </CartLineUpdateButton>
-      &nbsp;
-      <CartLineUpdateButton lines={[{id: lineId, quantity: nextQuantity}]}>
-        <button
-          aria-label="Increase quantity"
-          name="increase-quantity"
-          value={nextQuantity}
-          disabled={!!isOptimistic}
-        >
-          <span>&#43;</span>
-        </button>
-      </CartLineUpdateButton>
-      &nbsp;
+      <small>Quantité: {quantity} &nbsp;&nbsp;</small>
+      <div className="flex ">
+        <CartLineUpdateButton lines={[{id: lineId, quantity: prevQuantity}]}>
+          <button
+            aria-label="Decrease quantity"
+            disabled={quantity <= 1 || !!isOptimistic}
+            name="decrease-quantity"
+            value={prevQuantity}
+          >
+            <TbCircleMinus
+              size={'20px'}
+              className="cursor-pointer text-textBrown"
+            />
+          </button>
+        </CartLineUpdateButton>
+        &nbsp;
+        <CartLineUpdateButton lines={[{id: lineId, quantity: nextQuantity}]}>
+          <button
+            aria-label="Increase quantity"
+            name="increase-quantity"
+            value={nextQuantity}
+            disabled={!!isOptimistic}
+          >
+            <TbCirclePlus
+              size={'20px'}
+              className="cursor-pointer text-textBrown"
+            />
+          </button>
+        </CartLineUpdateButton>
+      </div>
+
       <CartLineRemoveButton lineIds={[lineId]} disabled={!!isOptimistic} />
     </div>
   );
@@ -119,8 +120,12 @@ function CartLineRemoveButton({lineIds, disabled}) {
       action={CartForm.ACTIONS.LinesRemove}
       inputs={{lineIds}}
     >
-      <button disabled={disabled} type="submit">
-        Remove
+      <button
+        className="border-1 border-textBrown p-1 rounded-sm text-[0.95rem]"
+        disabled={disabled}
+        type="submit"
+      >
+        supprimer
       </button>
     </CartForm>
   );

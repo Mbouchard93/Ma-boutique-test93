@@ -31,7 +31,7 @@ aside {
 
 aside header {
   align-items: center;
-  border-bottom: 1px solid var(--color-dark);
+  border-bottom: 1px solid #5c3c17;
   display: flex;
   height: var(--header-height);
   justify-content: space-between;
@@ -159,7 +159,7 @@ button.reset:hover:not(:has(> *)) {
 }
 
 .header-menu-mobile-toggle {
-  @media (min-width: 48em) {
+  @media (min-width: 50rem) {
     display: none;
   }
 }
@@ -173,7 +173,7 @@ button.reset:hover:not(:has(> *)) {
 .header-menu-desktop {
   display: none;
   grid-gap: 1rem;
-  @media (min-width: 45em) {
+  @media (min-width: 50rem) {
     display: flex;
     grid-gap: 1rem;
     margin-left: 3rem;
@@ -183,6 +183,7 @@ button.reset:hover:not(:has(> *)) {
 .header-menu-item {
   cursor: pointer;
   color: #5c3c17 !important;
+  font-weight: 600;
   text-transform: uppercase;
   border-right: 1px solid #ba9f81;
   padding: 0 1rem 0 1rem;
@@ -206,19 +207,8 @@ button.reset:hover:not(:has(> *)) {
 * --------------------------------------------------
 */
 .footer {
-  background: var(--color-dark);
+  background: #49230b;
   margin-top: auto;
-}
-
-.footer-menu {
-  align-items: center;
-  display: flex;
-  grid-gap: 1rem;
-  padding: 1rem;
-}
-
-.footer-menu a {
-  color: var(--color-light);
 }
 
 /*
@@ -253,7 +243,6 @@ button.reset:hover:not(:has(> *)) {
 }
 
 .cart-summary-aside {
-  background: white;
   border-top: 1px solid var(--color-dark);
   bottom: 0;
   padding-top: 0.75rem;
@@ -263,6 +252,7 @@ button.reset:hover:not(:has(> *)) {
 
 .cart-line-quantity {
   display: flex;
+  flex-direction: column;
 }
 
 .cart-discount {
@@ -286,7 +276,6 @@ button.reset:hover:not(:has(> *)) {
 }
 
 .predictive-search-form {
-  background: var(--color-light);
   position: sticky;
   top: 0;
 }
@@ -397,7 +386,7 @@ button.reset:hover:not(:has(> *)) {
 
 .products-grid {
   display: grid;
-  grid-gap: 1.5rem;
+  grid-gap: 4rem;
   grid-template-columns: repeat(auto-fit, minmax(var(--grid-item-width), 1fr));
   margin-bottom: 2rem;
 }
@@ -417,6 +406,7 @@ button.reset:hover:not(:has(> *)) {
   @media (min-width: 45em) {
     grid-template-columns: 1fr 1fr;
     grid-gap: 4rem;
+    max-width: 1080px;
   }
 }
 
@@ -430,9 +420,9 @@ button.reset:hover:not(:has(> *)) {
 }
 
 .product-main {
-  align-self: start;
   position: sticky;
   top: 6rem;
+  align-self: center;
 }
 
 .product-price-on-sale {

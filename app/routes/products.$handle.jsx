@@ -12,6 +12,7 @@ import {ProductImage} from '~/components/ProductImage';
 import {ProductForm} from '~/components/ProductForm';
 import Rating from '~/components/Rating';
 import AddToWishlist from '~/components/AddToWishlist';
+import Comments from '~/components/comments';
 
 /**
  * @type {MetaFunction<typeof loader>}
@@ -138,66 +139,70 @@ export default function Product() {
   );
 
   const {title, descriptionHtml} = product;
-  console.log(product.id);
   return (
-    <div className="product">
-      <ProductImage image={selectedVariant?.image} />
-      <div className="product-main">
-        <h1>{title}</h1>
-        <AddToWishlist productId={product.id} />
-        <ProductPrice
-          price={selectedVariant?.price}
-          compareAtPrice={selectedVariant?.compareAtPrice}
-        />
-        <br />
-        <Suspense
-          fallback={
-            <ProductForm
-              product={product}
-              selectedVariant={selectedVariant}
-              variants={[]}
-            />
-          }
-        >
-          <Await
-            errorElement="There was a problem loading product variants"
-            resolve={variants}
-          >
-            {(data) => (
+    <section className="text-textBrown">
+      <div className="product">
+        <ProductImage image={selectedVariant?.image} />
+        <div className="product-main place-self-center">
+          <h1>{title}</h1>
+          <div className="flex justify-between">
+            <Rating />
+            <AddToWishlist productId={product.id} />
+          </div>
+          <ProductPrice
+            price={selectedVariant?.price}
+            compareAtPrice={selectedVariant?.compareAtPrice}
+          />
+          <br />
+          <Suspense
+            fallback={
               <ProductForm
                 product={product}
                 selectedVariant={selectedVariant}
-                variants={data?.product?.variants.nodes || []}
+                variants={[]}
               />
-            )}
-          </Await>
-        </Suspense>
-        <br />
-        <br />
-        <p>
-          <strong>Description</strong>
-        </p>
-        <br />
-        <div dangerouslySetInnerHTML={{__html: descriptionHtml}} />
-        <br />
+            }
+          >
+            <Await
+              errorElement="There was a problem loading product variants"
+              resolve={variants}
+            >
+              {(data) => (
+                <ProductForm
+                  product={product}
+                  selectedVariant={selectedVariant}
+                  variants={data?.product?.variants.nodes || []}
+                />
+              )}
+            </Await>
+          </Suspense>
+          <br />
+          <br />
+          <p>
+            <strong>Description</strong>
+          </p>
+          <br />
+          <div dangerouslySetInnerHTML={{__html: descriptionHtml}} />
+          <br />
+        </div>
+        <Analytics.ProductView
+          data={{
+            products: [
+              {
+                id: product.id,
+                title: product.title,
+                price: selectedVariant?.price.amount || '0',
+                vendor: product.vendor,
+                variantId: selectedVariant?.id || '',
+                variantTitle: selectedVariant?.title || '',
+                quantity: 1,
+              },
+            ],
+          }}
+        />
       </div>
-      <Analytics.ProductView
-        data={{
-          products: [
-            {
-              id: product.id,
-              title: product.title,
-              price: selectedVariant?.price.amount || '0',
-              vendor: product.vendor,
-              variantId: selectedVariant?.id || '',
-              variantTitle: selectedVariant?.title || '',
-              quantity: 1,
-            },
-          ],
-        }}
-      />
-      <Rating />
-    </div>
+      <Comments productId={product.id} />
+    </section>
   );
 }
 

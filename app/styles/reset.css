@@ -10,17 +10,16 @@ h1,
 h2,
 p {
   margin: 0;
-  padding: 0;
 }
 
 h1 {
-  font-size: 1.6rem;
+  font-size: 2rem;
   font-weight: 700;
   line-height: 1.4;
 }
 
 h2 {
-  font-size: 1.2rem;
+  font-size: 1.6rem;
   font-weight: 700;
   line-height: 1.4;
 }
@@ -36,12 +35,11 @@ h5 {
 }
 
 p {
-  font-size: 1rem;
+  font-size: 1.1rem;
   line-height: 1.4;
 }
 
 a {
-  color: #000;
   text-decoration: none;
 }
 
@@ -97,7 +95,6 @@ form {
 
 input {
   border-radius: 4px;
-  border: 1px solid #000;
   font-size: 1rem;
   margin-bottom: 0.5rem;
   margin-top: 0.25rem;

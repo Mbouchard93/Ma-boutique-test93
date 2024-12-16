@@ -12,6 +12,25 @@
   --font-family-lora: 'Lora', serif;
   --color-rusticBrown: #672f0d;
   --color-oatBrown: #ba9f81;
+  --color-light: #fcf5ed;
   --color-brown: #5c3c17;
   --color-textBrown: #49230b;
+  --color-yellow: #b39e82;
+  --color-orange: #a13e00;
+  --shadow-footer: -6px -6px 1px 0px #b39e82;
+  --shadow-btnBrown: 3px 3px 1px 0px #b39e82;
+  --shadow-btnBrownHover: 1px 1px 1px 0px #b39e82;
+}
+
+@keyframes scrolling {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.scrolling {
+  animation: scrolling 45s linear infinite;
 }

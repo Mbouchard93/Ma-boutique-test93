@@ -43,8 +43,8 @@ export function Aside({children, heading, type}) {
       role="dialog"
     >
       <button className="close-outside" onClick={close} />
-      <aside className="bg-red-500 text-white">
-        <header>
+      <aside className="bg-[#fcf5ed]">
+        <header className="text-textBrown">
           <h3>{heading}</h3>
           <button className="close reset" onClick={close}>
             &times;
